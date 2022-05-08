@@ -1,8 +1,11 @@
 package lt.ku.SportsClub.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,27 +31,46 @@ public class ClientController {
 	
 	@GetMapping("/new")  
 	public String clientNew(Model model) {
+		model.addAttribute("client", new Client());
 		return "client_new";
 	}
 	
 	@PostMapping("/new")
 	public String addClient(
-			@RequestParam("name") String name, 
-			@RequestParam("surname") String surname, 
-			@RequestParam("email") String email) {
-		Client client_new=new Client(name,surname, email);
-		clientService.addClient(client_new);
+			@Valid
+			@ModelAttribute
+			Client client,
+			BindingResult result,
+			
+			Model model) {
+		if(result.hasErrors()) {
+
+			return "client_new";
+		}
+		clientService.addClient(client);
 		return "redirect:/client/";
 	}
 	
 	@GetMapping("/update/{id}")
-	public String clientNew(@PathVariable("id") Integer id, Model model) {
+	public String clientNew(@PathVariable("id") Integer id, 
+			Model model) {
 		model.addAttribute("client", clientService.getClient(id));
+		
 		return "client_update";
 	}
 	
 	@PostMapping("/update/{id}")
-	public String clientUpdate(@PathVariable("id") Integer id, @ModelAttribute Client cl) {
+	public String clientUpdate(
+			@Valid
+			@ModelAttribute 
+			Client cl,
+			BindingResult result,
+			
+			@PathVariable("id") Integer id) {
+		if(result.hasErrors()) {
+
+			return "client_update";
+		}
 		clientService.updateClient(cl);
 		return "redirect:/client/";
 	}

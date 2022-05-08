@@ -75,10 +75,8 @@ public class RegistrationController {
 			Integer workoutId,
 			Model model) {
 		registration.setClient(clientService.getClient(clientId));
-		System.out.println(clientService.getClient(clientId).getId());
+		
 		registration.setWorkout(workoutService.getWorkout(workoutId));
-		System.out.println(workoutId);
-		System.out.println(workoutService.getWorkout(workoutId).getId());
 		registrationService.updateRegistration(registration);
 		return "redirect:/registration/";
 	}
