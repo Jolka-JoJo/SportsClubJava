@@ -2,6 +2,7 @@ package lt.ku.SportsClub.entities;
 
 import java.sql.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,15 +16,30 @@ public class Workout {
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private Integer id;
 
+	@Column
 	private String name;
 	
+	@Column
 	private java.sql.Date date;
 	
+	@Column
 	private Integer places;
 	
+	@Column
 	private String location;
-
+	
+	@Column
+	public String fileName;
+	
 	public Workout() {
+	}
+
+	public Workout(String name, Date date, Integer places, String location, String fileName) {
+		this.name = name;
+		this.date = date;
+		this.places = places;
+		this.location = location;
+		this.fileName = fileName;
 	}
 
 	public Workout(String name, Date date, Integer places, String location) {
@@ -72,4 +88,12 @@ public class Workout {
 	public void setLocation(String location) {
 		this.location = location;
 	}
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
 }
